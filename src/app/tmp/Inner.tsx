@@ -2,7 +2,6 @@ import { auth } from "@/features/auth";
 import { getChannels } from "@/features/traq/getChannels";
 import { parseChannels } from "@/features/traq/parseChannels";
 import { ChannelSelector } from "./ChannelSelector";
-import { InnerClient } from "./InnerClient";
 
 export default async function Inner() {
 	const session = await auth();
@@ -24,7 +23,7 @@ export default async function Inner() {
 
 	return (
 		<>
-			<InnerClient channels={channels.public} />
+			<ChannelSelector channels={channels.public} />
 		</>
 	);
 }
