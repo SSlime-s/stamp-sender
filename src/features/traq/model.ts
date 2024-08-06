@@ -4,8 +4,8 @@ const MessageStampSchema = v.object({
 	userId: v.pipe(v.string(), v.uuid()),
 	stampId: v.pipe(v.string(), v.uuid()),
 	count: v.pipe(v.number(), v.integer(), v.toMinValue(0)),
-	createdAt: v.pipe(v.string(), v.isoDateTime()),
-	updatedAt: v.pipe(v.string(), v.isoDateTime()),
+	createdAt: v.pipe(v.string(), v.isoTimestamp()),
+	updatedAt: v.pipe(v.string(), v.isoTimestamp()),
 });
 
 export const MessageSchema = v.object({
@@ -13,8 +13,8 @@ export const MessageSchema = v.object({
 	userId: v.pipe(v.string(), v.uuid()),
 	channelId: v.pipe(v.string(), v.uuid()),
 	content: v.string(),
-	createdAt: v.pipe(v.string(), v.isoDateTime()),
-	updatedAt: v.pipe(v.string(), v.isoDateTime()),
+	createdAt: v.pipe(v.string(), v.isoTimestamp()),
+	updatedAt: v.pipe(v.string(), v.isoTimestamp()),
 	pinned: v.boolean(),
 	stamps: v.array(MessageStampSchema),
 	threadId: v.optional(v.nullable(v.pipe(v.string(), v.uuid()))),
@@ -25,8 +25,8 @@ export const StampScheme = v.object({
 	id: v.pipe(v.string(), v.uuid()),
 	name: v.string(),
 	creatorId: v.pipe(v.string(), v.uuid()),
-	createdAt: v.pipe(v.string(), v.isoDateTime()),
-	updatedAt: v.pipe(v.string(), v.isoDateTime()),
+	createdAt: v.pipe(v.string(), v.isoTimestamp()),
+	updatedAt: v.pipe(v.string(), v.isoTimestamp()),
 	fileId: v.pipe(v.string(), v.uuid()),
 	isUnicode: v.boolean(),
 	hasThumbnail: v.optional(v.boolean()),
