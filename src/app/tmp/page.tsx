@@ -1,20 +1,8 @@
 import { auth, signIn, signOut } from "@/features/auth";
+import Inner from "./Inner";
 
 export default async function Home() {
 	const session = await auth();
-
-	let userDetails;
-	if (session?.user !== undefined) {
-		const token = session.user.accessToken;
-		const a = "";
-
-		const response = await fetch("https://q.trap.jp/api/v3/users/me", {
-			headers: {
-				Authorization: `Bearer ${token}`,
-			},
-		});
-		userDetails = await response.json();
-	}
 
 	return (
 		<main className="h-full mb-auto">
@@ -44,14 +32,7 @@ export default async function Home() {
 				</button>
 			</form>
 
-			{userDetails !== undefined && (
-				<>
-					<h2>User Details</h2>
-					<code>
-						<pre>{JSON.stringify(userDetails, null, 2)}</pre>
-					</code>
-				</>
-			)}
+			<Inner />
 		</main>
 	);
 }
