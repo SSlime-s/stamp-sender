@@ -6,6 +6,7 @@ import { TRAQ_API_BASE_URL } from "@/features/traq/consts";
 import { AuthImg } from "@/components/AuthImg";
 import { StampSelector } from "./StampSelector";
 import { getStamps } from "@/features/traq/getStamps";
+import { SendStampButton } from "./SendStampButton";
 
 export default async function Inner() {
 	const session = await auth();
@@ -38,6 +39,7 @@ export default async function Inner() {
 				height={32}
 			/>
 			<StampSelector stamps={stamps} token={token} />
+			<SendStampButton stamps={stamps} token={token} />
 		</>
 	);
 }
