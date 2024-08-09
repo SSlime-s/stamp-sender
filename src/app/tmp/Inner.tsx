@@ -7,6 +7,7 @@ import { AuthImg } from "@/components/AuthImg";
 import { StampSelector } from "./StampSelector";
 import { getStamps } from "@/features/traq/getStamps";
 import { SendStampButton } from "./SendStampButton";
+import { EffectSelector } from "./EffectSelector";
 
 export default async function Inner() {
 	const session = await auth();
@@ -40,6 +41,7 @@ export default async function Inner() {
 			/>
 			<StampSelector stamps={stamps} token={token} />
 			<SendStampButton stamps={stamps} token={token} />
+			<EffectSelector />
 		</>
 	);
 }
