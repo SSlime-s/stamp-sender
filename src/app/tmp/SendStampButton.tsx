@@ -43,11 +43,18 @@ export function SendStampButton({ token, stamps }: Props) {
 	}, [busy, channelId, stamp, token]);
 
 	return (
-		<Button onClick={send} disabled={busy} variant="outline">
+		<Button
+			onClick={send}
+			disabled={busy}
+			variant="outline"
+			className="h-auto rounded-full p-12"
+		>
 			<AuthImgClient
 				token={token}
 				src={fileUrl(stamp?.fileId ?? "")}
 				alt="送信"
+				width={128}
+				height={128}
 			/>
 		</Button>
 	);
