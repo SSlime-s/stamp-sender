@@ -1,7 +1,8 @@
+import type { LSKeys } from "./keys";
 import { useLocalStorage } from "./useLocalStorage";
 
 export function useListLocalStorage(
-	key: string,
+	key: LSKeys,
 ): [string[], (value: string[]) => void] {
 	const [value, setValue] = useLocalStorage(key);
 

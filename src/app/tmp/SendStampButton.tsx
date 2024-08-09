@@ -5,8 +5,9 @@ import { Button } from "@/components/ui/button";
 import { fileUrl } from "@/features/traq/fileUrl";
 import type { Stamp } from "@/features/traq/model";
 import { postMessage } from "@/features/traq/postMessage";
-import { useLocalStorage } from "@/lib/useLocalStorage";
+import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { useCallback, useMemo, useState } from "react";
+import { LSKeys } from "@/features/localstorage/keys";
 
 interface Props {
 	token: string;
@@ -14,9 +15,9 @@ interface Props {
 }
 export function SendStampButton({ token, stamps }: Props) {
 	const [busy, setBusy] = useState(false);
-	const [channelId] = useLocalStorage("post-channel");
-	const [stampId] = useLocalStorage("post-stamp");
-	const [effect] = useLocalStorage("post-stamp-effect");
+	const [channelId] = useLocalStorage(LSKeys.PostChannel);
+	const [stampId] = useLocalStorage(LSKeys.PostStamp);
+	const [effect] = useLocalStorage(LSKeys.PostStampEffect);
 
 	const idToStampMap = useMemo(() => {
 		return new Map(stamps.map((stamp) => [stamp.id, stamp]));

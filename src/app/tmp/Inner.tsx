@@ -39,7 +39,7 @@ export default async function Inner() {
 				width={32}
 				height={32}
 			/>
-			<StampSelector stamps={stamps} token={token} />
+			<StampSelector stamps={stamps} />
 			<SendStampButton stamps={stamps} token={token} />
 			<EffectSelector />
 		</>

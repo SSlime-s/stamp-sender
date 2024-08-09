@@ -3,7 +3,8 @@
 import { buttonVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useLocalStorage } from "@/lib/useLocalStorage";
+import { LSKeys } from "@/features/localstorage/keys";
+import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { cn } from "@/lib/utils";
 import { useCallback, useId } from "react";
 
@@ -31,7 +32,7 @@ const EFFECTS = [
 ] as const satisfies EffectItem[];
 
 export function EffectSelector() {
-	const [effect, setEffect] = useLocalStorage("post-stamp-effect");
+	const [effect, setEffect] = useLocalStorage(LSKeys.PostStampEffect);
 
 	const resolvedEffect = effect ?? "";
 

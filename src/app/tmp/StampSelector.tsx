@@ -1,7 +1,5 @@
 "use client";
 
-import { AuthImg } from "@/components/AuthImg";
-import { AuthImgClient } from "@/components/AuthImg/client";
 import { Button } from "@/components/ui/button";
 import {
 	Command,
@@ -15,24 +13,22 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import { fileUrl } from "@/features/traq/fileUrl";
-import type { Channel, Stamp } from "@/features/traq/model";
-import { parseChannels } from "@/features/traq/parseChannels";
-import { useListLocalStorage } from "@/lib/useListLocalStorage";
-import { useLocalStorage } from "@/lib/useLocalStorage";
+import type { Stamp } from "@/features/traq/model";
+import { useListLocalStorage } from "@/features/localstorage/useListLocalStorage";
+import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
+import { LSKeys } from "@/features/localstorage/keys";
 
 const HISTORY_MAX = 10;
 
 interface Props {
 	stamps: Stamp[];
-	token: string;
 }
-export function StampSelector({ stamps, token }: Props) {
+export function StampSelector({ stamps }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [value, setValue] = useLocalStorage("post-stamp");
-	const [history, setHistory] = useListLocalStorage("post-stamp-history");
+	const [value, setValue] = useLocalStorage(LSKeys.PostStamp);
+	const [history, setHistory] = useListLocalStorage(LSKeys.PostStampHistory);
 
 	const idToStampMap = useMemo(() => {
 		return new Map(stamps.map((stamp) => [stamp.id, stamp]));
@@ -89,12 +85,6 @@ export function StampSelector({ stamps, token }: Props) {
 								value={name}
 								onSelect={(_name) => handleSelect(stamp.id)}
 							>
-								{/* <AuthImgClient
-									src={fileUrl(stamp.fileId)}
-									alt={stamp.name}
-									token={token}
-									title={stamp.name}
-								/> */}
 								:{stamp.name}:
 							</CommandItem>
 						))}

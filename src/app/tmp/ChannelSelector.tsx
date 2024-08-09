@@ -15,16 +15,17 @@ import {
 } from "@/components/ui/popover";
 import type { Channel } from "@/features/traq/model";
 import { parseChannels } from "@/features/traq/parseChannels";
-import { useLocalStorage } from "@/lib/useLocalStorage";
+import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
+import { LSKeys } from "@/features/localstorage/keys";
 
 interface Props {
 	channels: Channel[];
 }
 export function ChannelSelector({ channels }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
-	const [value, setValue] = useLocalStorage("post-channel");
+	const [value, setValue] = useLocalStorage(LSKeys.PostChannel);
 
 	const { idToChannelMap, channelFullNameMap } = useMemo(() => {
 		return parseChannels(channels);

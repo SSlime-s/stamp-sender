@@ -1,7 +1,8 @@
 import { useSyncExternalStore } from "react";
+import type { LSKeys } from "./keys";
 
 export function useLocalStorage(
-	key: string,
+	key: LSKeys,
 ): [string | null, (value: string | null) => void] {
 	function setValue(value: string | null) {
 		if (value === null) {
