@@ -16,6 +16,7 @@ export function SendStampButton({ token, stamps }: Props) {
 	const [busy, setBusy] = useState(false);
 	const [channelId] = useLocalStorage("post-channel");
 	const [stampId] = useLocalStorage("post-stamp");
+	const [effect] = useLocalStorage("post-stamp-effect");
 
 	const idToStampMap = useMemo(() => {
 		return new Map(stamps.map((stamp) => [stamp.id, stamp]));
@@ -36,11 +37,13 @@ export function SendStampButton({ token, stamps }: Props) {
 		setBusy(true);
 
 		try {
-			await postMessage(token, channelId, `:${stamp.name}:`);
+			const message =
+				effect !== null ? `:${stamp.name}:${effect}` : `:${stamp.name}:`;
+			await postMessage(token, channelId, message);
 		} finally {
 			setBusy(false);
 		}
-	}, [busy, channelId, stamp, token]);
+	}, [busy, channelId, stamp, token, effect]);
 
 	return (
 		<Button
