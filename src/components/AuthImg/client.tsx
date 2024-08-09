@@ -22,6 +22,10 @@ export function AuthImgClient({ token, src, ...props }: Props) {
 				},
 			});
 
+			if (res.status === 404) {
+				return null;
+			}
+
 			if (!res.ok) {
 				throw new Error(`Failed to fetch image: ${res.status}`);
 			}
