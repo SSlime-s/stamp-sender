@@ -13,6 +13,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LSKeys } from "@/features/localstorage/keys";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Channel } from "@/features/traq/model";
@@ -71,9 +72,13 @@ export function ChannelSelector({ channels }: Props) {
 					aria-expanded={isOpen}
 					aria-haspopup="listbox"
 				>
-					{value === null
-						? "Select channel"
-						: `#${channelFullNameMap.get(value) ?? "Unknown channel"}`}
+					{value === undefined ? (
+						<Skeleton className="h-4 w-32" />
+					) : value === null ? (
+						"Select channel"
+					) : (
+						`#${channelFullNameMap.get(value) ?? "Unknown channel"}`
+					)}
 					<CaretSortIcon />
 				</Button>
 			</PopoverTrigger>

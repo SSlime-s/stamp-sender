@@ -1,9 +1,12 @@
 import { useSyncExternalStore } from "react";
 import type { LSKeys } from "./keys";
 
+/**
+ * @returns value は設定されていないとき null で、SSR 時は undefined になる
+ */
 export function useLocalStorage(
 	key: LSKeys,
-): [string | null, (value: string | null) => void] {
+): [string | null | undefined, (value: string | null) => void] {
 	function setValue(value: string | null) {
 		if (value === null) {
 			window.localStorage.removeItem(key);
@@ -17,7 +20,7 @@ export function useLocalStorage(
 	const value = useSyncExternalStore(
 		subscribe,
 		() => window.localStorage.getItem(key),
-		() => null,
+		() => undefined,
 	);
 
 	return [value, setValue];

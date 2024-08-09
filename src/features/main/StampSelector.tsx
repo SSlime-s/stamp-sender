@@ -13,6 +13,7 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LSKeys } from "@/features/localstorage/keys";
 import { useListLocalStorage } from "@/features/localstorage/useListLocalStorage";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
@@ -67,9 +68,13 @@ export function StampSelector({ stamps }: Props) {
 					aria-expanded={isOpen}
 					aria-haspopup="listbox"
 				>
-					{value === null
-						? "Select stamp"
-						: `:${idToStampMap.get(value)?.name ?? ""}:`}
+					{value === undefined ? (
+						<Skeleton className="h-4 w-16" />
+					) : value === null ? (
+						"Select stamp"
+					) : (
+						`:${idToStampMap.get(value)?.name ?? ""}:`
+					)}
 					<CaretSortIcon />
 				</Button>
 			</PopoverTrigger>

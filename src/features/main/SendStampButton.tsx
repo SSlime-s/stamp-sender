@@ -28,7 +28,7 @@ export function SendStampButton({ token, stamps }: Props) {
 		return new Map(stamps.map((stamp) => [stamp.id, stamp]));
 	}, [stamps]);
 	const stamp = useMemo(() => {
-		if (stampId === null) {
+		if (stampId === null || stampId === undefined) {
 			return undefined;
 		}
 
