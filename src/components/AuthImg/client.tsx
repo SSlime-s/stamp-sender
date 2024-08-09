@@ -1,9 +1,9 @@
 "use client";
 
-import useSWR from "swr";
-import { blobToURI } from "./blobToURI";
 import { Skeleton } from "@/components/ui/skeleton";
 import type React from "react";
+import useSWR from "swr";
+import { blobToURI } from "./blobToURI";
 
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
 	token: string;

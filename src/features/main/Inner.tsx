@@ -1,11 +1,10 @@
 import { auth } from "@/features/auth";
 import { getChannels } from "@/features/traq/getChannels";
-import { parseChannels } from "@/features/traq/parseChannels";
-import { ChannelSelector } from "./ChannelSelector";
-import { StampSelector } from "./StampSelector";
 import { getStamps } from "@/features/traq/getStamps";
-import { SendStampButton } from "./SendStampButton";
+import { ChannelSelector } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
+import { SendStampButton } from "./SendStampButton";
+import { StampSelector } from "./StampSelector";
 
 export default async function Inner() {
 	const session = await auth();

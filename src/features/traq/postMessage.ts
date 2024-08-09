@@ -1,5 +1,5 @@
-import { TRAQ_API_BASE_URL } from "./consts";
 import * as v from "valibot";
+import { TRAQ_API_BASE_URL } from "./consts";
 import { MessageSchema } from "./model";
 
 export async function postMessage(

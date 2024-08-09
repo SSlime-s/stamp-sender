@@ -1,6 +1,6 @@
 import * as v from "valibot";
-import { ChannelScheme } from "./model";
 import { TRAQ_API_BASE_URL } from "./consts";
+import { ChannelScheme } from "./model";
 
 const ChannelResponseScheme = v.object({
 	public: v.array(ChannelScheme),

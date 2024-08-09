@@ -2,12 +2,17 @@
 
 import { AuthImgClient } from "@/components/AuthImg/client";
 import { Button } from "@/components/ui/button";
+import { LSKeys } from "@/features/localstorage/keys";
+import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
+import { TRAQ_BASE_URL } from "@/features/traq/consts";
+import { deleteMessage } from "@/features/traq/deleteMessage";
 import { fileUrl } from "@/features/traq/fileUrl";
 import type { Stamp } from "@/features/traq/model";
 import { postMessage } from "@/features/traq/postMessage";
-import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
+import { TrashIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
-import { LSKeys } from "@/features/localstorage/keys";
+import { toast } from "sonner";
 
 interface Props {
 	token: string;
@@ -40,7 +45,30 @@ export function SendStampButton({ token, stamps }: Props) {
 		try {
 			const message =
 				effect !== null ? `:${stamp.name}:${effect}` : `:${stamp.name}:`;
-			await postMessage(token, channelId, message);
+			const { id, createdAt } = await postMessage(token, channelId, message);
+
+			const deleteAction = async () => {
+				await deleteMessage(token, id);
+				toast.success(`「${message}」を削除しました`);
+			};
+
+			toast.success(`「${message}」を送信しました`, {
+				description: (
+					<Button variant="link" asChild>
+						<Link
+							href={`${TRAQ_BASE_URL}/messages/${id}`}
+						>{`${new Date(createdAt).toLocaleString()}`}</Link>
+					</Button>
+				),
+				action: {
+					label: (
+						<>
+							削除 <TrashIcon />
+						</>
+					),
+					onClick: deleteAction,
+				},
+			});
 		} finally {
 			setBusy(false);
 		}

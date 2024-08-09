@@ -13,12 +13,12 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
+import { LSKeys } from "@/features/localstorage/keys";
+import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Channel } from "@/features/traq/model";
 import { parseChannels } from "@/features/traq/parseChannels";
-import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
-import { LSKeys } from "@/features/localstorage/keys";
 
 interface Props {
 	channels: Channel[];

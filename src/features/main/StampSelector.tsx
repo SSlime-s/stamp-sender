@@ -13,12 +13,12 @@ import {
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
-import type { Stamp } from "@/features/traq/model";
+import { LSKeys } from "@/features/localstorage/keys";
 import { useListLocalStorage } from "@/features/localstorage/useListLocalStorage";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
+import type { Stamp } from "@/features/traq/model";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
-import { LSKeys } from "@/features/localstorage/keys";
 
 const HISTORY_MAX = 10;
 
