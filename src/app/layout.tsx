@@ -10,6 +10,7 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
 	title: "Stamp Sender",
 	description: "特定のチャンネルにスタンプだけを送るためのクライアント",
+	manifest: "/manifest.json",
 };
 
 export default function RootLayout({
