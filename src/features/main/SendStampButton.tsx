@@ -7,22 +7,28 @@ import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { TRAQ_BASE_URL } from "@/features/traq/consts";
 import { deleteMessage } from "@/features/traq/deleteMessage";
 import { fileUrl } from "@/features/traq/fileUrl";
-import type { Stamp } from "@/features/traq/model";
+import type { Channel, Stamp } from "@/features/traq/model";
 import { postMessage } from "@/features/traq/postMessage";
 import { PaperPlaneIcon, TrashIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
+import { parseChannels } from "../traq/parseChannels";
 
 interface Props {
 	token: string;
 	stamps: Stamp[];
+	channels: Channel[];
 }
-export function SendStampButton({ token, stamps }: Props) {
+export function SendStampButton({ token, stamps, channels }: Props) {
 	const [busy, setBusy] = useState(false);
 	const [channelId] = useLocalStorage(LSKeys.PostChannel);
 	const [stampId] = useLocalStorage(LSKeys.PostStamp);
 	const [effect] = useLocalStorage(LSKeys.PostStampEffect);
+
+	const { idToChannelMap } = useMemo(() => {
+		return parseChannels(channels);
+	}, [channels]);
 
 	const idToStampMap = useMemo(() => {
 		return new Map(stamps.map((stamp) => [stamp.id, stamp]));
@@ -35,8 +41,17 @@ export function SendStampButton({ token, stamps }: Props) {
 		return idToStampMap.get(stampId) ?? undefined;
 	}, [idToStampMap, stampId]);
 
+	const isNotifyAll = useMemo(() => {
+		if (channelId === null || channelId === undefined) {
+			return false;
+		}
+
+		const channel = idToChannelMap.get(channelId);
+		return channel?.force ?? false;
+	}, [channelId, idToChannelMap]);
+
 	const send = useCallback(async () => {
-		if (busy || !channelId || !stamp) {
+		if (busy || !channelId || !stamp || isNotifyAll) {
 			return;
 		}
 
@@ -72,12 +87,12 @@ export function SendStampButton({ token, stamps }: Props) {
 		} finally {
 			setBusy(false);
 		}
-	}, [busy, channelId, stamp, token, effect]);
+	}, [isNotifyAll, busy, channelId, stamp, token, effect]);
 
 	return (
 		<Button
 			onClick={send}
-			disabled={busy}
+			disabled={busy || isNotifyAll}
 			variant="outline"
 			className="w-auto h-auto rounded-full px-12 py-8 grid grid-flow-row gap-2 place-items-center aspect-square"
 		>

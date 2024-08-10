@@ -24,7 +24,11 @@ export default async function Inner() {
 			<div className="grid gap-y-12 grid-flow-row place-items-center">
 				<ChannelSelector channels={channels.public} />
 				<div className="grid gap-y-4 grid-flow-row place-items-center">
-					<SendStampButton stamps={stamps} token={token} />
+					<SendStampButton
+						stamps={stamps}
+						channels={channels.public}
+						token={token}
+					/>
 					<StampSelector stamps={stamps} />
 				</div>
 				<EffectSelector />
