@@ -19,8 +19,13 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="ja">
-			<body className={cn(inter.className, "grid grid-rows-[max-content 1fr]")}>
+		<html lang="ja" className="h-full">
+			<body
+				className={cn(
+					inter.className,
+					"grid grid-rows-[max-content_1fr] h-full",
+				)}
+			>
 				<Header />
 				{children}
 				<Toaster />
