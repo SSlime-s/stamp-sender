@@ -1,12 +1,13 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
 import {
 	Command,
 	CommandEmpty,
+	CommandGroup,
 	CommandInput,
 	CommandItem,
 	CommandList,
+	CommandSeparator,
 } from "@/components/ui/command";
 import {
 	Popover,
@@ -24,9 +25,10 @@ import { useCallback, useMemo, useState } from "react";
 const HISTORY_MAX = 10;
 
 interface Props {
+	token: string;
 	stamps: Stamp[];
 }
-export function StampSelector({ stamps }: Props) {
+export function StampSelector({ token, stamps }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [value, setValue] = useLocalStorage(LSKeys.PostStamp);
 	const [history, setHistory] = useListLocalStorage(LSKeys.PostStampHistory);
@@ -60,42 +62,62 @@ export function StampSelector({ stamps }: Props) {
 	);
 
 	return (
-		<Popover open={isOpen} onOpenChange={setIsOpen}>
-			<PopoverTrigger asChild>
-				<Button
-					variant="outline"
-					role="combobox"
-					aria-expanded={isOpen}
-					aria-haspopup="listbox"
-				>
-					{value === undefined ? (
-						<Skeleton className="h-4 w-16" />
-					) : value === null ? (
-						"Select stamp"
-					) : (
-						`:${idToStampMap.get(value)?.name ?? ""}:`
-					)}
-					<CaretSortIcon />
-				</Button>
-			</PopoverTrigger>
+		<div className="grid grid-flow-row place-items-center gap-4">
+			<Popover open={isOpen} onOpenChange={setIsOpen}>
+				<PopoverTrigger asChild>
+					<Button
+						variant="outline"
+						role="combobox"
+						aria-expanded={isOpen}
+						aria-haspopup="listbox"
+					>
+						{value === undefined ? (
+							<Skeleton className="h-4 w-16" />
+						) : value === null ? (
+							"Select stamp"
+						) : (
+							`:${idToStampMap.get(value)?.name ?? ""}:`
+						)}
+						<CaretSortIcon />
+					</Button>
+				</PopoverTrigger>
 
-			<PopoverContent>
-				<Command>
-					<CommandInput placeholder="Search stamp" />
-					<CommandList>
-						<CommandEmpty>No channels found.</CommandEmpty>
-						{Array.from(nameToStampMap.entries()).map(([name, stamp]) => (
-							<CommandItem
-								key={stamp.id}
-								value={name}
-								onSelect={(_name) => handleSelect(stamp.id)}
-							>
-								:{stamp.name}:
-							</CommandItem>
-						))}
-					</CommandList>
-				</Command>
-			</PopoverContent>
-		</Popover>
+				<PopoverContent>
+					<Command>
+						<CommandInput placeholder="Search stamp" />
+						<CommandList>
+							<CommandEmpty>No channels found.</CommandEmpty>
+							{history.length > 0 && (
+								<>
+									<CommandGroup heading="History">
+										{history.map((stampId) => (
+											<CommandItem
+												key={stampId}
+												value={idToStampMap.get(stampId)?.name ?? ""}
+												onSelect={handleSelect}
+											>
+												:{idToStampMap.get(stampId)?.name ?? ""}:
+											</CommandItem>
+										))}
+									</CommandGroup>
+									<CommandSeparator />
+								</>
+							)}
+							<CommandGroup heading="Stamps">
+								{Array.from(nameToStampMap.entries()).map(([name, stamp]) => (
+									<CommandItem
+										key={stamp.id}
+										value={name}
+										onSelect={(_name) => handleSelect(stamp.id)}
+									>
+										:{stamp.name}:
+									</CommandItem>
+								))}
+							</CommandGroup>
+						</CommandList>
+					</Command>
+				</PopoverContent>
+			</Popover>
+		</div>
 	);
 }
