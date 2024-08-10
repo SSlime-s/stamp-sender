@@ -9,7 +9,7 @@ import { deleteMessage } from "@/features/traq/deleteMessage";
 import { fileUrl } from "@/features/traq/fileUrl";
 import type { Channel, Stamp } from "@/features/traq/model";
 import { postMessage } from "@/features/traq/postMessage";
-import { PaperPlaneIcon, TrashIcon } from "@radix-ui/react-icons";
+import { FileIcon, PaperPlaneIcon, TrashIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
@@ -96,17 +96,27 @@ export function SendStampButton({ token, stamps, channels }: Props) {
 			variant="outline"
 			className="w-auto h-auto rounded-full px-12 py-8 grid grid-flow-row gap-2 place-items-center aspect-square"
 		>
-			<AuthImgClient
-				token={token}
-				src={fileUrl(stamp?.fileId ?? "")}
-				alt={`:${stamp?.name ?? "Unknown stamp"}`}
-				width={128}
-				height={128}
-			/>
+			{stampId === null ? (
+				<FileIcon height={128} width={128} className="text-slate-300" />
+			) : (
+				<AuthImgClient
+					token={token}
+					src={fileUrl(stamp?.fileId ?? "")}
+					alt={`:${stamp?.name ?? "Unknown stamp"}`}
+					width={128}
+					height={128}
+				/>
+			)}
 
 			<span className="text-slate-400 grid grid-cols-[max-content_max-content] items-center gap-1">
-				送信
-				<PaperPlaneIcon />
+				{stampId === null ? (
+					<>未選択</>
+				) : (
+					<>
+						送信
+						<PaperPlaneIcon />
+					</>
+				)}
 			</span>
 		</Button>
 	);
