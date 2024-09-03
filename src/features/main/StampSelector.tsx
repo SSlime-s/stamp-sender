@@ -86,7 +86,7 @@ export function StampSelector({ token, stamps }: Props) {
 					<Command>
 						<CommandInput placeholder="Search stamp" />
 						<CommandList>
-							<CommandEmpty>No channels found.</CommandEmpty>
+							<CommandEmpty>No stamps found.</CommandEmpty>
 							{history.length > 0 && (
 								<>
 									<CommandGroup heading="History">
