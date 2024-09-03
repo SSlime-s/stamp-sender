@@ -21,8 +21,13 @@ import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Stamp } from "@/features/traq/model";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
+import { useFilter } from "./useFIlter";
 
 const HISTORY_MAX = 10;
+
+function stampToName(stamp: Stamp) {
+	return stamp.name;
+}
 
 interface Props {
 	token: string;
@@ -37,12 +42,11 @@ export function StampSelector({ token, stamps }: Props) {
 		return new Map(stamps.map((stamp) => [stamp.id, stamp]));
 	}, [stamps]);
 
-	const nameToStampMap = useMemo(() => {
-		const entries = stamps.map((stamp) => [stamp.name, stamp] as const);
-		entries.sort((a, b) => a[0].localeCompare(b[0]));
-
-		return new Map(entries);
-	}, [stamps]);
+	const {
+		filter,
+		filteredItems: filteredStamps,
+		setFilter,
+	} = useFilter(stamps, stampToName);
 
 	const handleSelect = useCallback(
 		(stampId: string) => {
@@ -83,11 +87,15 @@ export function StampSelector({ token, stamps }: Props) {
 				</PopoverTrigger>
 
 				<PopoverContent>
-					<Command>
-						<CommandInput placeholder="Search stamp" />
+					<Command shouldFilter={false}>
+						<CommandInput
+							placeholder="Search stamp"
+							value={filter}
+							onValueChange={setFilter}
+						/>
 						<CommandList>
 							<CommandEmpty>No stamps found.</CommandEmpty>
-							{history.length > 0 && (
+							{history.length > 0 && filter.length === 0 && (
 								<>
 									<CommandGroup heading="History">
 										{history.map((stampId) => (
@@ -103,17 +111,18 @@ export function StampSelector({ token, stamps }: Props) {
 									<CommandSeparator />
 								</>
 							)}
-							<CommandGroup heading="Stamps">
-								{Array.from(nameToStampMap.entries()).map(([name, stamp]) => (
-									<CommandItem
-										key={stamp.id}
-										value={name}
-										onSelect={(_name) => handleSelect(stamp.id)}
-									>
-										:{stamp.name}:
-									</CommandItem>
-								))}
-							</CommandGroup>
+							{filteredStamps.length > 0 && (
+								<CommandGroup heading="Stamps">
+									{filteredStamps.slice(0, 20).map((stamp) => (
+										<CommandItem
+											key={stamp.id}
+											onSelect={(_name) => handleSelect(stamp.id)}
+										>
+											:{stamp.name}:
+										</CommandItem>
+									))}
+								</CommandGroup>
+							)}
 						</CommandList>
 					</Command>
 				</PopoverContent>
