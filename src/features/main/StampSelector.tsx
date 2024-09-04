@@ -19,8 +19,10 @@ import { LSKeys } from "@/features/localstorage/keys";
 import { useListLocalStorage } from "@/features/localstorage/useListLocalStorage";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Stamp } from "@/features/traq/model";
+import { useTriggerRender } from "@/lib/useTriggerRender";
 import { CaretSortIcon } from "@radix-ui/react-icons";
-import { useCallback, useMemo, useState } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { useFilter } from "./useFIlter";
 
 const HISTORY_MAX = 10;
@@ -37,6 +39,8 @@ export function StampSelector({ token, stamps }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [value, setValue] = useLocalStorage(LSKeys.PostStamp);
 	const [history, setHistory] = useListLocalStorage(LSKeys.PostStampHistory);
+
+	const triggerRender = useTriggerRender();
 
 	const idToStampMap = useMemo(() => {
 		return new Map(stamps.map((stamp) => [stamp.id, stamp]));
@@ -65,9 +69,25 @@ export function StampSelector({ token, stamps }: Props) {
 		[value, history, setValue, setHistory],
 	);
 
+	const parentRef = useRef<HTMLDivElement>(null);
+	const virtualizer = useVirtualizer({
+		count: filteredStamps.length,
+		getScrollElement: () => parentRef.current,
+		estimateSize: () => 32,
+		overscan: 5,
+	});
+
+	const onOpenChange = useCallback(
+		(open: boolean) => {
+			setIsOpen(open);
+			setFilter("");
+		},
+		[setFilter],
+	);
+
 	return (
 		<div className="grid grid-flow-row place-items-center gap-4">
-			<Popover open={isOpen} onOpenChange={setIsOpen}>
+			<Popover open={isOpen} onOpenChange={onOpenChange}>
 				<PopoverTrigger asChild>
 					<Button
 						variant="outline"
@@ -86,14 +106,14 @@ export function StampSelector({ token, stamps }: Props) {
 					</Button>
 				</PopoverTrigger>
 
-				<PopoverContent>
+				<PopoverContent onAnimationStart={triggerRender}>
 					<Command shouldFilter={false}>
 						<CommandInput
 							placeholder="Search stamp"
 							value={filter}
 							onValueChange={setFilter}
 						/>
-						<CommandList>
+						<CommandList ref={parentRef}>
 							<CommandEmpty>No stamps found.</CommandEmpty>
 							{history.length > 0 && filter.length === 0 && (
 								<>
@@ -113,14 +133,33 @@ export function StampSelector({ token, stamps }: Props) {
 							)}
 							{filteredStamps.length > 0 && (
 								<CommandGroup heading="Stamps">
-									{filteredStamps.slice(0, 20).map((stamp) => (
-										<CommandItem
-											key={stamp.id}
-											onSelect={(_name) => handleSelect(stamp.id)}
-										>
-											:{stamp.name}:
-										</CommandItem>
-									))}
+									<div
+										style={
+											{
+												"--height": `${virtualizer.getTotalSize()}px`,
+											} as React.CSSProperties
+										}
+										className="h-[var(--height)] relative"
+									>
+										{virtualizer.getVirtualItems().map((virtualItem) => (
+											<CommandItem
+												key={filteredStamps[virtualItem.index].id}
+												value={filteredStamps[virtualItem.index].name}
+												onSelect={(_name) =>
+													handleSelect(filteredStamps[virtualItem.index].id)
+												}
+												style={
+													{
+														"--top": `${virtualItem.start}px`,
+														"--height": `${virtualItem.size}px`,
+													} as React.CSSProperties
+												}
+												className="absolute top-0 left-0 w-full h-[var(--height)] translate-y-[var(--top)]"
+											>
+												:{filteredStamps[virtualItem.index].name}:
+											</CommandItem>
+										))}
+									</div>
 								</CommandGroup>
 							)}
 						</CommandList>
