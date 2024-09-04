@@ -6,6 +6,7 @@ import { ChannelSelector } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
 import { SendStampButton } from "./SendStampButton";
 import { StampSelector } from "./StampSelector";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default async function Inner() {
 	const session = await auth();
@@ -37,18 +38,20 @@ export default async function Inner() {
 
 	return (
 		<>
-			<div className="grid gap-y-12 grid-flow-row place-items-center">
-				<ChannelSelector channels={channels.public} />
-				<div className="grid gap-y-4 grid-flow-row place-items-center">
-					<SendStampButton
-						stamps={stamps}
-						channels={channels.public}
-						token={token}
-					/>
-					<StampSelector token={token} stamps={stamps} />
+			<TooltipProvider>
+				<div className="grid gap-y-12 grid-flow-row place-items-center">
+					<ChannelSelector channels={channels.public} />
+					<div className="grid gap-y-4 grid-flow-row place-items-center">
+						<SendStampButton
+							stamps={stamps}
+							channels={channels.public}
+							token={token}
+						/>
+						<StampSelector token={token} stamps={stamps} />
+					</div>
+					<EffectSelector />
 				</div>
-				<EffectSelector />
-			</div>
+			</TooltipProvider>
 		</>
 	);
 }

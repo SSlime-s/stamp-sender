@@ -2,6 +2,11 @@
 
 import { AuthImgClient } from "@/components/AuthImg/client";
 import { Button } from "@/components/ui/button";
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { LSKeys } from "@/features/localstorage/keys";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { TRAQ_BASE_URL } from "@/features/traq/consts";
@@ -90,34 +95,44 @@ export function SendStampButton({ token, stamps, channels }: Props) {
 	}, [isNotifyAll, busy, channelId, stamp, token, effect]);
 
 	return (
-		<Button
-			onClick={send}
-			disabled={busy || isNotifyAll}
-			variant="outline"
-			className="w-auto h-auto rounded-full px-12 py-8 grid grid-flow-row gap-2 place-items-center aspect-square"
-		>
-			{stampId === null ? (
-				<FileIcon height={128} width={128} className="text-slate-300" />
-			) : (
-				<AuthImgClient
-					token={token}
-					src={fileUrl(stamp?.fileId ?? "")}
-					alt={`:${stamp?.name ?? "Unknown stamp"}`}
-					width={128}
-					height={128}
-				/>
-			)}
+		<Tooltip>
+			<TooltipTrigger asChild>
+				<Button
+					onClick={send}
+					disabled={busy || isNotifyAll}
+					variant="outline"
+					className="w-auto h-auto rounded-full px-12 py-8 grid grid-flow-row gap-2 place-items-center aspect-square disabled:pointer-events-auto disabled:hover:bg-background"
+				>
+					{stampId === null ? (
+						<FileIcon height={128} width={128} className="text-slate-300" />
+					) : (
+						<AuthImgClient
+							token={token}
+							src={fileUrl(stamp?.fileId ?? "")}
+							alt={`:${stamp?.name ?? "Unknown stamp"}`}
+							width={128}
+							height={128}
+						/>
+					)}
 
-			<span className="text-slate-400 grid grid-cols-[max-content_max-content] items-center gap-1">
-				{stampId === null ? (
-					<>未選択</>
-				) : (
-					<>
-						送信
-						<PaperPlaneIcon />
-					</>
-				)}
-			</span>
-		</Button>
+					<span className="text-slate-400 grid grid-cols-[max-content_max-content] items-center gap-1">
+						{stampId === null ? (
+							<>未選択</>
+						) : (
+							<>
+								送信
+								<PaperPlaneIcon />
+							</>
+						)}
+					</span>
+				</Button>
+			</TooltipTrigger>
+
+			{isNotifyAll && (
+				<TooltipContent className="rounded-lg">
+					<p>全体通知チャンネルには送信できません</p>
+				</TooltipContent>
+			)}
+		</Tooltip>
 	);
 }
