@@ -18,8 +18,15 @@ import { LSKeys } from "@/features/localstorage/keys";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Channel } from "@/features/traq/model";
 import { parseChannels } from "@/features/traq/parseChannels";
+import { useTriggerRender } from "@/lib/useTriggerRender";
 import { CaretSortIcon } from "@radix-ui/react-icons";
-import { useCallback, useMemo, useState } from "react";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { useCallback, useMemo, useRef, useState } from "react";
+import { useFilter } from "./useFIlter";
+
+function idNameTupleToFullName([_id, fullName]: [string, string]) {
+	return fullName;
+}
 
 interface Props {
 	channels: Channel[];
@@ -27,6 +34,8 @@ interface Props {
 export function ChannelSelector({ channels }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [value, setValue] = useLocalStorage(LSKeys.PostChannel);
+
+	const triggerRender = useTriggerRender();
 
 	const { idToChannelMap, channelFullNameMap } = useMemo(() => {
 		return parseChannels(channels);
@@ -51,7 +60,6 @@ export function ChannelSelector({ channels }: Props) {
 		const tuples = Array.from(channelFullNameMap.entries()).filter(([id]) => {
 			return idToChannelMap.get(id)?.archived === false;
 		});
-		tuples.sort((a, b) => a[1].localeCompare(b[1]));
 
 		return tuples;
 	}, [idToChannelMap, channelFullNameMap]);
@@ -63,8 +71,30 @@ export function ChannelSelector({ channels }: Props) {
 		return map;
 	}, [idNameTuples]);
 
+	const {
+		filter,
+		filteredItems: filteredIdNameTuples,
+		setFilter,
+	} = useFilter(idNameTuples, idNameTupleToFullName);
+
+	const parentRef = useRef<HTMLDivElement>(null);
+	const virtualizer = useVirtualizer({
+		count: filteredIdNameTuples.length,
+		getScrollElement: () => parentRef.current,
+		estimateSize: () => 32,
+		overscan: 5,
+	});
+
+	const onOpenChange = useCallback(
+		(open: boolean) => {
+			setIsOpen(open);
+			setFilter("");
+		},
+		[setFilter],
+	);
+
 	return (
-		<Popover open={isOpen} onOpenChange={setIsOpen}>
+		<Popover open={isOpen} onOpenChange={onOpenChange}>
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
@@ -83,20 +113,44 @@ export function ChannelSelector({ channels }: Props) {
 				</Button>
 			</PopoverTrigger>
 
-			<PopoverContent>
-				<Command>
-					<CommandInput placeholder="Search channel" />
-					<CommandList>
+			<PopoverContent onAnimationStart={triggerRender}>
+				<Command shouldFilter={false}>
+					<CommandInput
+						placeholder="Search channel"
+						value={filter}
+						onValueChange={setFilter}
+					/>
+					<CommandList ref={parentRef}>
 						<CommandEmpty>No channels found.</CommandEmpty>
-						{idNameTuples.map(([id, fullName]) => (
-							<CommandItem
-								key={id}
-								value={fullName}
-								onSelect={(name) => handleSelect(nameToIdMap.get(name) ?? "")}
+						{filteredIdNameTuples.length > 0 && (
+							<div
+								style={
+									{
+										"--height": `${virtualizer.getTotalSize()}px`,
+									} as React.CSSProperties
+								}
+								className="h-[var(--height)] relative"
 							>
-								#{fullName}
-							</CommandItem>
-						))}
+								{virtualizer.getVirtualItems().map((virtualItem) => (
+									<CommandItem
+										key={filteredIdNameTuples[virtualItem.index][0]}
+										value={filteredIdNameTuples[virtualItem.index][1]}
+										onSelect={(name) =>
+											handleSelect(nameToIdMap.get(name) ?? "")
+										}
+										style={
+											{
+												"--top": `${virtualItem.start}px`,
+												"--height": `${virtualItem.size}px`,
+											} as React.CSSProperties
+										}
+										className="absolute top-0 left-0 w-full h-[var(--height)] translate-y-[var(--top)]"
+									>
+										#{filteredIdNameTuples[virtualItem.index][1]}
+									</CommandItem>
+								))}
+							</div>
+						)}
 					</CommandList>
 				</Command>
 			</PopoverContent>
