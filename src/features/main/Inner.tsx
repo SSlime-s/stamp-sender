@@ -47,7 +47,7 @@ export default async function Inner() {
 							channels={channels.public}
 							token={token}
 						/>
-						<StampSelector token={token} stamps={stamps} />
+						<StampSelector stamps={stamps} />
 					</div>
 					<EffectSelector />
 				</div>

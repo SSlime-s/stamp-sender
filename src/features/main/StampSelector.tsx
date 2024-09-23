@@ -32,10 +32,9 @@ function stampToName(stamp: Stamp) {
 }
 
 interface Props {
-	token: string;
 	stamps: Stamp[];
 }
-export function StampSelector({ token, stamps }: Props) {
+export function StampSelector({ stamps }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [value, setValue] = useLocalStorage(LSKeys.PostStamp);
 	const [history, setHistory] = useListLocalStorage(LSKeys.PostStampHistory);
