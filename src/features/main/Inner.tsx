@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { auth, signIn } from "@/features/auth";
 import { getChannels } from "@/features/traq/getChannels";
 import { getStamps } from "@/features/traq/getStamps";
@@ -6,7 +7,6 @@ import { ChannelSelector } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
 import { SendStampButton } from "./SendStampButton";
 import { StampSelector } from "./StampSelector";
-import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default async function Inner() {
 	const session = await auth();

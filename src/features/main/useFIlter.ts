@@ -1,5 +1,5 @@
-import { useMemo, useState } from "react";
 import { defaultFilter } from "cmdk";
+import { useMemo, useState } from "react";
 
 export function useFilter<T>(items: T[], getKey: (item: T) => string) {
 	const [filter, setFilter] = useState("");
