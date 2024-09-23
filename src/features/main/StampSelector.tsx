@@ -122,7 +122,7 @@ export function StampSelector({ token, stamps }: Props) {
 											<CommandItem
 												key={stampId}
 												value={idToStampMap.get(stampId)?.name ?? ""}
-												onSelect={handleSelect}
+												onSelect={(_name) => handleSelect(stampId)}
 											>
 												:{idToStampMap.get(stampId)?.name ?? ""}:
 											</CommandItem>
