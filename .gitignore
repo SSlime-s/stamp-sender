@@ -35,5 +35,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# React Cosmos
 cosmos.imports.ts
 cosmos.imports.js
+
+cosmos-export
