@@ -9,16 +9,15 @@ import {
 } from "@/components/ui/tooltip";
 import { LSKeys } from "@/features/localstorage/keys";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
-import { TRAQ_BASE_URL } from "@/features/traq/consts";
 import { deleteMessage } from "@/features/traq/deleteMessage";
 import { fileUrl } from "@/features/traq/fileUrl";
 import type { Channel, Stamp } from "@/features/traq/model";
+import { parseChannels } from "@/features/traq/parseChannels";
 import { postMessage } from "@/features/traq/postMessage";
-import { FileIcon, PaperPlaneIcon, TrashIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
+import { FileIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
-import { parseChannels } from "../traq/parseChannels";
+import { sendSuccessToast } from "./toast";
 
 interface Props {
 	token: string;
@@ -31,7 +30,7 @@ export function SendStampButton({ token, stamps, channels }: Props) {
 	const [stampId] = useLocalStorage(LSKeys.PostStamp);
 	const [effect] = useLocalStorage(LSKeys.PostStampEffect);
 
-	const { idToChannelMap } = useMemo(() => {
+	const { idToChannelMap, channelFullNameMap } = useMemo(() => {
 		return parseChannels(channels);
 	}, [channels]);
 
@@ -72,27 +71,17 @@ export function SendStampButton({ token, stamps, channels }: Props) {
 				toast.success(`「${message}」を削除しました`);
 			};
 
-			toast.success(`「${message}」を送信しました`, {
-				description: (
-					<Button variant="link" asChild>
-						<Link
-							href={`${TRAQ_BASE_URL}/messages/${id}`}
-						>{`${new Date(createdAt).toLocaleString()}`}</Link>
-					</Button>
-				),
-				action: {
-					label: (
-						<>
-							削除 <TrashIcon />
-						</>
-					),
-					onClick: deleteAction,
-				},
+			sendSuccessToast({
+				message,
+				messageId: id,
+				createdAt,
+				channelPath: channelFullNameMap.get(channelId) ?? "",
+				onDelete: deleteAction,
 			});
 		} finally {
 			setBusy(false);
 		}
-	}, [isNotifyAll, busy, channelId, stamp, token, effect]);
+	}, [busy, channelFullNameMap, channelId, effect, isNotifyAll, stamp, token]);
 
 	return (
 		<Tooltip>
