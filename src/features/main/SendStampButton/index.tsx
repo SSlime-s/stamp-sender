@@ -63,7 +63,7 @@ export function SendStampButton({ token, stamps, channels }: Props) {
 
 		try {
 			const message =
-				effect !== null ? `:${stamp.name}:${effect}` : `:${stamp.name}:`;
+				effect !== null ? `:${stamp.name}.${effect}:` : `:${stamp.name}:`;
 			const { id, createdAt } = await postMessage(token, channelId, message);
 
 			const deleteAction = async () => {
