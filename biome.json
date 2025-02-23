@@ -7,9 +7,7 @@
 			"recommended": true,
 			"correctness": {
 				"noUnusedVariables": "warn",
-				"noUnusedImports": "warn"
-			},
-			"nursery": {
+				"noUnusedImports": "warn",
 				"noUnusedFunctionParameters": "warn"
 			}
 		}
@@ -18,5 +16,8 @@
 		"clientKind": "git",
 		"enabled": true,
 		"useIgnoreFile": true
+	},
+	"files": {
+		"ignore": ["public/mockServiceWorker.js"]
 	}
 }

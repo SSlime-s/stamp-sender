@@ -90,6 +90,7 @@ export function StampSelector({ stamps }: Props) {
 				<PopoverTrigger asChild>
 					<Button
 						variant="outline"
+						// biome-ignore lint/a11y/useSemanticElements: combobox にしたい
 						role="combobox"
 						aria-expanded={isOpen}
 						aria-haspopup="listbox"
