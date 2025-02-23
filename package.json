@@ -4,6 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
+		"dev:mock": "cross-env NEXT_PUBLIC_MOCK=true next dev",
 		"build": "next build",
 		"start": "next start",
 		"check": "biome check .",
@@ -27,7 +28,7 @@
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
 		"cmdk": "1.0.0",
-		"next": "14.2.5",
+		"next": "^14.2.24",
 		"next-auth": "5.0.0-beta.20",
 		"next-themes": "^0.3.0",
 		"react": "^18",
@@ -43,6 +44,8 @@
 		"@types/node": "^20",
 		"@types/react": "^18",
 		"@types/react-dom": "^18",
+		"cross-env": "^7.0.3",
+		"msw": "^2.7.1",
 		"postcss": "^8",
 		"react-cosmos": "^6.2.0",
 		"react-cosmos-next": "^6.2.0",
@@ -54,5 +57,8 @@
 			"cmdk@1.0.0": "patches/cmdk@1.0.0.patch"
 		}
 	},
-	"packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b"
+	"packageManager": "pnpm@9.11.0+sha512.0a203ffaed5a3f63242cd064c8fb5892366c103e328079318f78062f24ea8c9d50bc6a47aa3567cabefd824d170e78fa2745ed1f16b132e16436146b7688f19b",
+	"msw": {
+		"workerDirectory": ["./public", "public"]
+	}
 }
