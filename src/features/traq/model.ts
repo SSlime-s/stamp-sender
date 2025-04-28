@@ -24,12 +24,12 @@ export type Message = v.InferOutput<typeof MessageSchema>;
 export const StampScheme = v.object({
 	id: v.pipe(v.string(), v.uuid()),
 	name: v.string(),
-	creatorId: v.pipe(v.string(), v.uuid()),
-	createdAt: v.pipe(v.string(), v.isoTimestamp()),
-	updatedAt: v.pipe(v.string(), v.isoTimestamp()),
+	// creatorId: v.pipe(v.string(), v.uuid()),
+	// createdAt: v.pipe(v.string(), v.isoTimestamp()),
+	// updatedAt: v.pipe(v.string(), v.isoTimestamp()),
 	fileId: v.pipe(v.string(), v.uuid()),
 	isUnicode: v.boolean(),
-	hasThumbnail: v.optional(v.boolean()),
+	// hasThumbnail: v.optional(v.boolean()),
 });
 export type Stamp = v.InferOutput<typeof StampScheme>;
 
@@ -38,8 +38,15 @@ export const ChannelScheme = v.object({
 	parentId: v.nullable(v.pipe(v.string(), v.uuid())),
 	archived: v.boolean(),
 	force: v.boolean(),
-	topic: v.string(),
+	// topic: v.string(),
 	name: v.string(),
 	children: v.array(v.pipe(v.string(), v.uuid())),
 });
 export type Channel = v.InferOutput<typeof ChannelScheme>;
+
+export const ChannelSlimScheme = v.pick(ChannelScheme, [
+	"id",
+	"archived",
+	"force",
+]);
+export type ChannelSlim = v.InferOutput<typeof ChannelSlimScheme>;

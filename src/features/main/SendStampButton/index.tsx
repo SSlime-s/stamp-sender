@@ -12,7 +12,10 @@ import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { deleteMessage } from "@/features/traq/deleteMessage";
 import { fileUrl } from "@/features/traq/fileUrl";
 import type { Channel, Stamp } from "@/features/traq/model";
-import { parseChannels } from "@/features/traq/parseChannels";
+import {
+	parseChannels,
+	type ParsedChannels,
+} from "@/features/traq/parseChannels";
 import { postMessage } from "@/features/traq/postMessage";
 import { FileIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { useCallback, useMemo, useState } from "react";
@@ -22,17 +25,15 @@ import { sendSuccessToast } from "./toast";
 interface Props {
 	token: string;
 	stamps: Stamp[];
-	channels: Channel[];
+	parsedChannels: ParsedChannels;
 }
-export function SendStampButton({ token, stamps, channels }: Props) {
+export function SendStampButton({ token, stamps, parsedChannels }: Props) {
 	const [busy, setBusy] = useState(false);
 	const [channelId] = useLocalStorage(LSKeys.PostChannel);
 	const [stampId] = useLocalStorage(LSKeys.PostStamp);
 	const [effect] = useLocalStorage(LSKeys.PostStampEffect);
 
-	const { idToChannelMap, channelFullNameMap } = useMemo(() => {
-		return parseChannels(channels);
-	}, [channels]);
+	const { idToChannelMap, channelFullNameMap } = parsedChannels;
 
 	const idToStampMap = useMemo(() => {
 		return new Map(stamps.map((stamp) => [stamp.id, stamp]));

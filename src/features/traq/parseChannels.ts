@@ -1,6 +1,8 @@
-import type { Channel } from "./model";
+import { type Channel, type ChannelSlim, ChannelSlimScheme } from "./model";
+import * as v from "valibot";
 
 export type IdToChannelMap = Map<string, Channel>;
+export type IdToChannelSlimMap = Map<string, ChannelSlim>;
 export type ChannelTree = {
 	node: Channel;
 	children?: Map<string, ChannelTree>;
@@ -8,9 +10,18 @@ export type ChannelTree = {
 export type ChannelFullNameMap = Map<string, string>;
 
 export interface ParsedChannels {
-	idToChannelMap: IdToChannelMap;
-	channelTree: Map<string, ChannelTree>;
+	idToChannelMap: IdToChannelSlimMap;
 	channelFullNameMap: ChannelFullNameMap;
+}
+
+export function toSlimIdToChannelMap(
+	idToChannelMap: IdToChannelMap,
+): Map<string, ChannelSlim> {
+	const idToChannelSlimMap = new Map<string, ChannelSlim>();
+	for (const [id, channel] of idToChannelMap) {
+		idToChannelSlimMap.set(id, v.parse(ChannelSlimScheme, channel));
+	}
+	return idToChannelSlimMap;
 }
 
 export function parseChannels(channels: Readonly<Channel[]>): ParsedChannels {
@@ -65,8 +76,7 @@ export function parseChannels(channels: Readonly<Channel[]>): ParsedChannels {
 	}
 
 	return {
-		idToChannelMap,
-		channelTree,
+		idToChannelMap: toSlimIdToChannelMap(idToChannelMap),
 		channelFullNameMap,
 	};
 }

@@ -7,6 +7,7 @@ import { ChannelSelector } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
 import { SendStampButton } from "./SendStampButton";
 import { StampSelector } from "./StampSelector";
+import { parseChannels } from "../traq/parseChannels";
 
 export default async function Inner() {
 	const session = await auth();
@@ -36,15 +37,17 @@ export default async function Inner() {
 		getStamps(token),
 	]);
 
+	const parsedChannels = parseChannels(channels.public);
+
 	return (
 		<>
 			<TooltipProvider>
 				<div className="grid gap-y-12 grid-flow-row place-items-center">
-					<ChannelSelector channels={channels.public} />
+					<ChannelSelector parsedChannels={parsedChannels} />
 					<div className="grid gap-y-4 grid-flow-row place-items-center">
 						<SendStampButton
 							stamps={stamps}
-							channels={channels.public}
+							parsedChannels={parsedChannels}
 							token={token}
 						/>
 						<StampSelector stamps={stamps} />

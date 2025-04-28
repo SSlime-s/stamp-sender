@@ -17,7 +17,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { LSKeys } from "@/features/localstorage/keys";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Channel } from "@/features/traq/model";
-import { parseChannels } from "@/features/traq/parseChannels";
+import {
+	parseChannels,
+	type ParsedChannels,
+} from "@/features/traq/parseChannels";
 import { useTriggerRender } from "@/lib/useTriggerRender";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useVirtualizer } from "@tanstack/react-virtual";
@@ -29,17 +32,15 @@ function idNameTupleToFullName([_id, fullName]: [string, string]) {
 }
 
 interface Props {
-	channels: Channel[];
+	parsedChannels: ParsedChannels;
 }
-export function ChannelSelector({ channels }: Props) {
+export function ChannelSelector({ parsedChannels }: Props) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [value, setValue] = useLocalStorage(LSKeys.PostChannel);
 
 	const triggerRender = useTriggerRender();
 
-	const { idToChannelMap, channelFullNameMap } = useMemo(() => {
-		return parseChannels(channels);
-	}, [channels]);
+	const { idToChannelMap, channelFullNameMap } = parsedChannels;
 
 	const handleSelect = useCallback(
 		(channelId: string) => {
