@@ -21,7 +21,7 @@ import { parseChannels } from "@/features/traq/parseChannels";
 import { useTriggerRender } from "@/lib/useTriggerRender";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { use, useCallback, useMemo, useRef, useState } from "react";
 import { useFilter } from "./useFIlter";
 
 function idNameTupleToFullName([_id, fullName]: [string, string]) {
@@ -29,9 +29,11 @@ function idNameTupleToFullName([_id, fullName]: [string, string]) {
 }
 
 interface Props {
-	channels: Channel[];
+	channelsPromise: Promise<Channel[]>;
 }
-export function ChannelSelector({ channels }: Props) {
+export function ChannelSelector({ channelsPromise }: Props) {
+	const channels = use(channelsPromise);
+
 	const [isOpen, setIsOpen] = useState(false);
 	const [value, setValue] = useLocalStorage(LSKeys.PostChannel);
 

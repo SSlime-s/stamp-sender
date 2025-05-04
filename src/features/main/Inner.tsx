@@ -44,22 +44,24 @@ async function InnerLoggedIn({
 }: {
 	token: string;
 }) {
-	const [channels, stamps] = await Promise.all([
-		getChannels(token),
-		getStamps(token),
-	]);
+	const channelsPromise = getChannels(token);
+	const channelsPublicPromise = channelsPromise.then(
+		(channels) => channels.public,
+	);
+
+	const stampsPromise = getStamps(token);
 
 	return (
 		<TooltipProvider>
 			<div className="grid gap-y-12 grid-flow-row place-items-center">
-				<ChannelSelector channels={channels.public} />
+				<ChannelSelector channelsPromise={channelsPublicPromise} />
 				<div className="grid gap-y-4 grid-flow-row place-items-center">
 					<SendStampButton
-						stamps={stamps}
-						channels={channels.public}
+						stampsPromise={stampsPromise}
+						channelsPromise={channelsPublicPromise}
 						token={token}
 					/>
-					<StampSelector stamps={stamps} />
+					<StampSelector stampsPromise={stampsPromise} />
 				</div>
 				<EffectSelector />
 			</div>
