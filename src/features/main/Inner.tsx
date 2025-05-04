@@ -4,7 +4,7 @@ import { auth, signIn } from "@/features/auth";
 import { getChannels } from "@/features/traq/getChannels";
 import { getStamps } from "@/features/traq/getStamps";
 import { Suspense } from "react";
-import { ChannelSelector } from "./ChannelSelector";
+import { ChannelSelector, ChannelSelectorSkeleton } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
 import { SendStampButton } from "./SendStampButton";
 import { StampSelector } from "./StampSelector";
@@ -42,7 +42,7 @@ export default async function Inner() {
 	return (
 		<TooltipProvider>
 			<div className="grid gap-y-12 grid-flow-row place-items-center">
-				<Suspense fallback={<div>Loading...</div>}>
+				<Suspense fallback={<ChannelSelectorSkeleton />}>
 					<ChannelSelector channelsPromise={channelsPublicPromise} />
 				</Suspense>
 				<div className="grid gap-y-4 grid-flow-row place-items-center">

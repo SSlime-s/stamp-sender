@@ -160,3 +160,12 @@ export function ChannelSelector({ channelsPromise }: Props) {
 		</Popover>
 	);
 }
+
+export function ChannelSelectorSkeleton() {
+	return (
+		<Button variant="outline" disabled>
+			<Skeleton className="h-4 w-32" />
+			<CaretSortIcon />
+		</Button>
+	);
+}
