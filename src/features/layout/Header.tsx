@@ -23,7 +23,11 @@ export async function Header() {
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						<GitHubLogoIcon className="h-[1.2rem] w-[1.2rem] " />
+						<GitHubLogoIcon
+							className="h-[1.2rem] w-[1.2rem]"
+							role="img"
+							aria-label="GitHub"
+						/>
 					</a>
 				</Button>
 			</div>
@@ -46,10 +50,13 @@ export async function Header() {
 					<DropdownMenuTrigger asChild>
 						<Button variant="ghost" className="size-fit justify-self-end">
 							<Avatar>
-								<AvatarImage src={session.user.image ?? ""} />
+								<AvatarImage
+									src={session.user.image ?? ""}
+									alt={session.user.name ?? ""}
+								/>
 								<AvatarFallback>{session.user.name}</AvatarFallback>
 							</Avatar>
-							<CaretDownIcon />
+							<CaretDownIcon aria-hidden />
 						</Button>
 					</DropdownMenuTrigger>
 					<DropdownMenuContent>
