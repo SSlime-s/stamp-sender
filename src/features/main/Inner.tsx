@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { auth, signIn } from "@/features/auth";
 import { getChannels } from "@/features/traq/getChannels";
 import { getStamps } from "@/features/traq/getStamps";
+import { Suspense } from "react";
 import { ChannelSelector } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
 import { SendStampButton } from "./SendStampButton";
@@ -31,27 +32,37 @@ export default async function Inner() {
 	}
 	const token = session.user.accessToken;
 
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<InnerLoggedIn token={token} />
+		</Suspense>
+	);
+}
+
+async function InnerLoggedIn({
+	token,
+}: {
+	token: string;
+}) {
 	const [channels, stamps] = await Promise.all([
 		getChannels(token),
 		getStamps(token),
 	]);
 
 	return (
-		<>
-			<TooltipProvider>
-				<div className="grid gap-y-12 grid-flow-row place-items-center">
-					<ChannelSelector channels={channels.public} />
-					<div className="grid gap-y-4 grid-flow-row place-items-center">
-						<SendStampButton
-							stamps={stamps}
-							channels={channels.public}
-							token={token}
-						/>
-						<StampSelector stamps={stamps} />
-					</div>
-					<EffectSelector />
+		<TooltipProvider>
+			<div className="grid gap-y-12 grid-flow-row place-items-center">
+				<ChannelSelector channels={channels.public} />
+				<div className="grid gap-y-4 grid-flow-row place-items-center">
+					<SendStampButton
+						stamps={stamps}
+						channels={channels.public}
+						token={token}
+					/>
+					<StampSelector stamps={stamps} />
 				</div>
-			</TooltipProvider>
-		</>
+				<EffectSelector />
+			</div>
+		</TooltipProvider>
 	);
 }
