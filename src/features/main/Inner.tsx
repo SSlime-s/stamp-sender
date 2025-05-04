@@ -40,21 +40,25 @@ export default async function Inner() {
 	const stampsPromise = getStamps(token);
 
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<TooltipProvider>
-				<div className="grid gap-y-12 grid-flow-row place-items-center">
+		<TooltipProvider>
+			<div className="grid gap-y-12 grid-flow-row place-items-center">
+				<Suspense fallback={<div>Loading...</div>}>
 					<ChannelSelector channelsPromise={channelsPublicPromise} />
-					<div className="grid gap-y-4 grid-flow-row place-items-center">
+				</Suspense>
+				<div className="grid gap-y-4 grid-flow-row place-items-center">
+					<Suspense fallback={<div>Loading...</div>}>
 						<SendStampButton
 							stampsPromise={stampsPromise}
 							channelsPromise={channelsPublicPromise}
 							token={token}
 						/>
+					</Suspense>
+					<Suspense fallback={<div>Loading...</div>}>
 						<StampSelector stampsPromise={stampsPromise} />
-					</div>
-					<EffectSelector />
+					</Suspense>
 				</div>
-			</TooltipProvider>
-		</Suspense>
+				<EffectSelector />
+			</div>
+		</TooltipProvider>
 	);
 }
