@@ -7,7 +7,7 @@ import { Suspense } from "react";
 import { ChannelSelector, ChannelSelectorSkeleton } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
 import { SendStampButton, SendStampButtonSkeleton } from "./SendStampButton";
-import { StampSelector } from "./StampSelector";
+import { StampSelector, StampSelectorSkeleton } from "./StampSelector";
 
 export default async function Inner() {
 	const session = await auth();
@@ -53,7 +53,7 @@ export default async function Inner() {
 							token={token}
 						/>
 					</Suspense>
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<StampSelectorSkeleton />}>
 						<StampSelector stampsPromise={stampsPromise} />
 					</Suspense>
 				</div>

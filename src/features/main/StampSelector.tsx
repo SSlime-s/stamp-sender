@@ -171,3 +171,14 @@ export function StampSelector({ stampsPromise }: Props) {
 		</div>
 	);
 }
+
+export function StampSelectorSkeleton() {
+	return (
+		<div className="grid grid-flow-row place-items-center gap-4">
+			<Button variant="outline" disabled>
+				<Skeleton className="h-4 w-16" />
+				<CaretSortIcon />
+			</Button>
+		</div>
+	);
+}
