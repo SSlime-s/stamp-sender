@@ -3,10 +3,11 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { auth, signIn } from "@/features/auth";
 import { getChannels } from "@/features/traq/getChannels";
 import { getStamps } from "@/features/traq/getStamps";
-import { ChannelSelector } from "./ChannelSelector";
+import { Suspense } from "react";
+import { ChannelSelector, ChannelSelectorSkeleton } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
-import { SendStampButton } from "./SendStampButton";
-import { StampSelector } from "./StampSelector";
+import { SendStampButton, SendStampButtonSkeleton } from "./SendStampButton";
+import { StampSelector, StampSelectorSkeleton } from "./StampSelector";
 
 export default async function Inner() {
 	const session = await auth();
@@ -31,27 +32,33 @@ export default async function Inner() {
 	}
 	const token = session.user.accessToken;
 
-	const [channels, stamps] = await Promise.all([
-		getChannels(token),
-		getStamps(token),
-	]);
+	const channelsPromise = getChannels(token);
+	const channelsPublicPromise = channelsPromise.then(
+		(channels) => channels.public,
+	);
+
+	const stampsPromise = getStamps(token);
 
 	return (
-		<>
-			<TooltipProvider>
-				<div className="grid gap-y-12 grid-flow-row place-items-center">
-					<ChannelSelector channels={channels.public} />
-					<div className="grid gap-y-4 grid-flow-row place-items-center">
+		<TooltipProvider>
+			<div className="grid gap-y-12 grid-flow-row place-items-center">
+				<Suspense fallback={<ChannelSelectorSkeleton />}>
+					<ChannelSelector channelsPromise={channelsPublicPromise} />
+				</Suspense>
+				<div className="grid gap-y-4 grid-flow-row place-items-center">
+					<Suspense fallback={<SendStampButtonSkeleton />}>
 						<SendStampButton
-							stamps={stamps}
-							channels={channels.public}
+							stampsPromise={stampsPromise}
+							channelsPromise={channelsPublicPromise}
 							token={token}
 						/>
-						<StampSelector stamps={stamps} />
-					</div>
-					<EffectSelector />
+					</Suspense>
+					<Suspense fallback={<StampSelectorSkeleton />}>
+						<StampSelector stampsPromise={stampsPromise} />
+					</Suspense>
 				</div>
-			</TooltipProvider>
-		</>
+				<EffectSelector />
+			</div>
+		</TooltipProvider>
 	);
 }

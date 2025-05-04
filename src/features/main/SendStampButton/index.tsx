@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthImgClient } from "@/components/AuthImg/client";
+import { AuthImgClient, AuthImgSkeleton } from "@/components/AuthImg/client";
 import { Button } from "@/components/ui/button";
 import {
 	Tooltip,
@@ -15,16 +15,23 @@ import type { Channel, Stamp } from "@/features/traq/model";
 import { parseChannels } from "@/features/traq/parseChannels";
 import { postMessage } from "@/features/traq/postMessage";
 import { FileIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
-import { useCallback, useMemo, useState } from "react";
+import { use, useCallback, useMemo, useState } from "react";
 import { toast } from "sonner";
 import { sendSuccessToast } from "./toast";
 
 interface Props {
 	token: string;
-	stamps: Stamp[];
-	channels: Channel[];
+	stampsPromise: Promise<Stamp[]>;
+	channelsPromise: Promise<Channel[]>;
 }
-export function SendStampButton({ token, stamps, channels }: Props) {
+export function SendStampButton({
+	token,
+	stampsPromise,
+	channelsPromise,
+}: Props) {
+	const stamps = use(stampsPromise);
+	const channels = use(channelsPromise);
+
 	const [busy, setBusy] = useState(false);
 	const [channelId] = useLocalStorage(LSKeys.PostChannel);
 	const [stampId] = useLocalStorage(LSKeys.PostStamp);
@@ -123,5 +130,21 @@ export function SendStampButton({ token, stamps, channels }: Props) {
 				</TooltipContent>
 			)}
 		</Tooltip>
+	);
+}
+
+export function SendStampButtonSkeleton() {
+	return (
+		<Button
+			variant="outline"
+			className="w-auto h-auto rounded-full px-12 py-8 grid grid-flow-row gap-2 place-items-center aspect-square"
+			disabled
+		>
+			<AuthImgSkeleton />
+			<span className="text-slate-400 grid grid-cols-[max-content_max-content] items-center gap-1">
+				送信
+				<PaperPlaneIcon />
+			</span>
+		</Button>
 	);
 }

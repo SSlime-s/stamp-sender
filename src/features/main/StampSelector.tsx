@@ -22,7 +22,7 @@ import type { Stamp } from "@/features/traq/model";
 import { useTriggerRender } from "@/lib/useTriggerRender";
 import { CaretSortIcon } from "@radix-ui/react-icons";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { use, useCallback, useMemo, useRef, useState } from "react";
 import { useFilter } from "./useFIlter";
 
 const HISTORY_MAX = 10;
@@ -32,9 +32,11 @@ function stampToName(stamp: Stamp) {
 }
 
 interface Props {
-	stamps: Stamp[];
+	stampsPromise: Promise<Stamp[]>;
 }
-export function StampSelector({ stamps }: Props) {
+export function StampSelector({ stampsPromise }: Props) {
+	const stamps = use(stampsPromise);
+
 	const [isOpen, setIsOpen] = useState(false);
 	const [value, setValue] = useLocalStorage(LSKeys.PostStamp);
 	const [history, setHistory] = useListLocalStorage(LSKeys.PostStampHistory);
@@ -166,6 +168,17 @@ export function StampSelector({ stamps }: Props) {
 					</Command>
 				</PopoverContent>
 			</Popover>
+		</div>
+	);
+}
+
+export function StampSelectorSkeleton() {
+	return (
+		<div className="grid grid-flow-row place-items-center gap-4">
+			<Button variant="outline" disabled>
+				<Skeleton className="h-4 w-16" />
+				<CaretSortIcon />
+			</Button>
 		</div>
 	);
 }
