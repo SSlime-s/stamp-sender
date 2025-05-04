@@ -6,7 +6,7 @@ import { getStamps } from "@/features/traq/getStamps";
 import { Suspense } from "react";
 import { ChannelSelector, ChannelSelectorSkeleton } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
-import { SendStampButton } from "./SendStampButton";
+import { SendStampButton, SendStampButtonSkeleton } from "./SendStampButton";
 import { StampSelector } from "./StampSelector";
 
 export default async function Inner() {
@@ -46,7 +46,7 @@ export default async function Inner() {
 					<ChannelSelector channelsPromise={channelsPublicPromise} />
 				</Suspense>
 				<div className="grid gap-y-4 grid-flow-row place-items-center">
-					<Suspense fallback={<div>Loading...</div>}>
+					<Suspense fallback={<SendStampButtonSkeleton />}>
 						<SendStampButton
 							stampsPromise={stampsPromise}
 							channelsPromise={channelsPublicPromise}

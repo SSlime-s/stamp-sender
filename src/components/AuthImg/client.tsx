@@ -43,19 +43,23 @@ export function AuthImgClient({ token, src, ...props }: Props) {
 	}
 
 	if (!data) {
-		return (
-			<Skeleton
-				style={
-					{
-						"--width": `${props.width ?? 128}px`,
-						"--height": `${props.height ?? 128}px`,
-					} as React.CSSProperties
-				}
-				className="h-[var(--height)] w-[var(--width)] rounded-2xl"
-			/>
-		);
+		return <AuthImgSkeleton />;
 	}
 
 	// biome-ignore lint/a11y/useAltText: <explanation>
 	return <img src={data} {...props} />;
+}
+
+export function AuthImgSkeleton() {
+	return (
+		<Skeleton
+			style={
+				{
+					"--width": "128px",
+					"--height": "128px",
+				} as React.CSSProperties
+			}
+			className="h-[var(--height)] w-[var(--width)] rounded-2xl"
+		/>
+	);
 }
