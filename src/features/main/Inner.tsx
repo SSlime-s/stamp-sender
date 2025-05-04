@@ -32,18 +32,6 @@ export default async function Inner() {
 	}
 	const token = session.user.accessToken;
 
-	return (
-		<Suspense fallback={<div>Loading...</div>}>
-			<InnerLoggedIn token={token} />
-		</Suspense>
-	);
-}
-
-async function InnerLoggedIn({
-	token,
-}: {
-	token: string;
-}) {
 	const channelsPromise = getChannels(token);
 	const channelsPublicPromise = channelsPromise.then(
 		(channels) => channels.public,
@@ -52,19 +40,21 @@ async function InnerLoggedIn({
 	const stampsPromise = getStamps(token);
 
 	return (
-		<TooltipProvider>
-			<div className="grid gap-y-12 grid-flow-row place-items-center">
-				<ChannelSelector channelsPromise={channelsPublicPromise} />
-				<div className="grid gap-y-4 grid-flow-row place-items-center">
-					<SendStampButton
-						stampsPromise={stampsPromise}
-						channelsPromise={channelsPublicPromise}
-						token={token}
-					/>
-					<StampSelector stampsPromise={stampsPromise} />
+		<Suspense fallback={<div>Loading...</div>}>
+			<TooltipProvider>
+				<div className="grid gap-y-12 grid-flow-row place-items-center">
+					<ChannelSelector channelsPromise={channelsPublicPromise} />
+					<div className="grid gap-y-4 grid-flow-row place-items-center">
+						<SendStampButton
+							stampsPromise={stampsPromise}
+							channelsPromise={channelsPublicPromise}
+							token={token}
+						/>
+						<StampSelector stampsPromise={stampsPromise} />
+					</div>
+					<EffectSelector />
 				</div>
-				<EffectSelector />
-			</div>
-		</TooltipProvider>
+			</TooltipProvider>
+		</Suspense>
 	);
 }
