@@ -1,5 +1,8 @@
 "use client";
 
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { use, useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Command,
@@ -19,9 +22,6 @@ import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Channel } from "@/features/traq/model";
 import { parseChannels } from "@/features/traq/parseChannels";
 import { useTriggerRender } from "@/lib/useTriggerRender";
-import { CaretSortIcon } from "@radix-ui/react-icons";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import { use, useCallback, useMemo, useRef, useState } from "react";
 import { useFilter } from "./useFIlter";
 
 function idNameTupleToFullName([_id, fullName]: [string, string]) {
@@ -100,7 +100,6 @@ export function ChannelSelector({ channelsPromise }: Props) {
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
-					// biome-ignore lint/a11y/useSemanticElements: combobox にしたい
 					role="combobox"
 					aria-expanded={isOpen}
 					aria-haspopup="listbox"

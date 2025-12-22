@@ -1,3 +1,4 @@
+import { CaretDownIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,7 +8,6 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { auth, signIn, signOut } from "@/features/auth";
-import { CaretDownIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ThemeSwitchButton } from "./ThemeSwitchButton";
 
 export async function Header() {

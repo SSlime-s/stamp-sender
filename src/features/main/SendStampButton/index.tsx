@@ -1,5 +1,8 @@
 "use client";
 
+import { FileIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
+import { use, useCallback, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { AuthImgClient, AuthImgSkeleton } from "@/components/AuthImg/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +17,6 @@ import { fileUrl } from "@/features/traq/fileUrl";
 import type { Channel, Stamp } from "@/features/traq/model";
 import { parseChannels } from "@/features/traq/parseChannels";
 import { postMessage } from "@/features/traq/postMessage";
-import { FileIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
-import { use, useCallback, useMemo, useState } from "react";
-import { toast } from "sonner";
 import { sendSuccessToast } from "./toast";
 
 interface Props {

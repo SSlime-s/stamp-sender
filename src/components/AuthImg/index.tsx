@@ -20,6 +20,7 @@ export async function AuthImg({ token, src, ...props }: Props) {
 	const blob = await res.blob();
 	const url = await blobToURI(blob);
 
-	// biome-ignore lint/a11y/useAltText: <explanation>
+	// biome-ignore lint/a11y/useAltText: alt は props に含まれている
+	// biome-ignore lint/performance/noImgElement: 外部から取ってくるので img のままでいい
 	return <img src={url} {...props} />;
 }

@@ -1,9 +1,9 @@
+import { Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { auth, signIn } from "@/features/auth";
 import { getChannels } from "@/features/traq/getChannels";
 import { getStamps } from "@/features/traq/getStamps";
-import { Suspense } from "react";
 import { ChannelSelector, ChannelSelectorSkeleton } from "./ChannelSelector";
 import { EffectSelector } from "./EffectSelector";
 import { SendStampButton, SendStampButtonSkeleton } from "./SendStampButton";

@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 import { useFixtureInput } from "react-cosmos/client";
+import { Button } from "@/components/ui/button";
 import { sendSuccessToast } from "./toast";
 
 export default function ToastFixture() {

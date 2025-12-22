@@ -1,8 +1,8 @@
-import { Button } from "@/components/ui/button";
-import { TRAQ_BASE_URL } from "@/features/traq/consts";
 import { TrashIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { TRAQ_BASE_URL } from "@/features/traq/consts";
 
 interface Data {
 	message: string;
