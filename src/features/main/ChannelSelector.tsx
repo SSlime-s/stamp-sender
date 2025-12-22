@@ -1,5 +1,8 @@
 "use client";
 
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { use, useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Command,
@@ -19,9 +22,6 @@ import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Channel } from "@/features/traq/model";
 import { parseChannels } from "@/features/traq/parseChannels";
 import { useTriggerRender } from "@/lib/useTriggerRender";
-import { CaretSortIcon } from "@radix-ui/react-icons";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import { use, useCallback, useMemo, useRef, useState } from "react";
 import { useFilter } from "./useFIlter";
 
 function idNameTupleToFullName([_id, fullName]: [string, string]) {
@@ -100,7 +100,6 @@ export function ChannelSelector({ channelsPromise }: Props) {
 			<PopoverTrigger asChild>
 				<Button
 					variant="outline"
-					// biome-ignore lint/a11y/useSemanticElements: combobox にしたい
 					role="combobox"
 					aria-expanded={isOpen}
 					aria-haspopup="listbox"
@@ -132,7 +131,7 @@ export function ChannelSelector({ channelsPromise }: Props) {
 										"--height": `${virtualizer.getTotalSize()}px`,
 									} as React.CSSProperties
 								}
-								className="h-[var(--height)] relative"
+								className="relative h-[var(--height)]"
 							>
 								{virtualizer.getVirtualItems().map((virtualItem) => (
 									<CommandItem
@@ -147,7 +146,7 @@ export function ChannelSelector({ channelsPromise }: Props) {
 												"--height": `${virtualItem.size}px`,
 											} as React.CSSProperties
 										}
-										className="absolute top-0 left-0 w-full h-[var(--height)] translate-y-[var(--top)]"
+										className="absolute top-0 left-0 h-[var(--height)] w-full translate-y-[var(--top)]"
 									>
 										#{filteredIdNameTuples[virtualItem.index][1]}
 									</CommandItem>

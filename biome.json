@@ -1,6 +1,6 @@
 {
-	"$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
-	"organizeImports": { "enabled": true },
+	"$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
 	"linter": {
 		"enabled": true,
 		"rules": {
@@ -9,7 +9,23 @@
 				"noUnusedVariables": "warn",
 				"noUnusedImports": "warn",
 				"noUnusedFunctionParameters": "warn"
+			},
+			"suspicious": {
+				"noUnknownAtRules": {
+					"level": "error",
+					"options": {
+						"ignore": ["tailwind"]
+					}
+				}
+			},
+			"nursery": {
+				"useSortedClasses": "warn"
 			}
+		}
+	},
+	"css": {
+		"parser": {
+			"tailwindDirectives": true
 		}
 	},
 	"vcs": {
@@ -18,6 +34,6 @@
 		"useIgnoreFile": true
 	},
 	"files": {
-		"ignore": ["public/mockServiceWorker.js"]
+		"includes": ["**", "!**/public/mockServiceWorker.js"]
 	}
 }

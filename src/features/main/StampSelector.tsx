@@ -1,4 +1,7 @@
 "use client";
+import { CaretSortIcon } from "@radix-ui/react-icons";
+import { useVirtualizer } from "@tanstack/react-virtual";
+import { use, useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
 	Command,
@@ -20,9 +23,6 @@ import { useListLocalStorage } from "@/features/localstorage/useListLocalStorage
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import type { Stamp } from "@/features/traq/model";
 import { useTriggerRender } from "@/lib/useTriggerRender";
-import { CaretSortIcon } from "@radix-ui/react-icons";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import { use, useCallback, useMemo, useRef, useState } from "react";
 import { useFilter } from "./useFIlter";
 
 const HISTORY_MAX = 10;
@@ -92,7 +92,6 @@ export function StampSelector({ stampsPromise }: Props) {
 				<PopoverTrigger asChild>
 					<Button
 						variant="outline"
-						// biome-ignore lint/a11y/useSemanticElements: combobox にしたい
 						role="combobox"
 						aria-expanded={isOpen}
 						aria-haspopup="listbox"
@@ -141,7 +140,7 @@ export function StampSelector({ stampsPromise }: Props) {
 												"--height": `${virtualizer.getTotalSize()}px`,
 											} as React.CSSProperties
 										}
-										className="h-[var(--height)] relative"
+										className="relative h-[var(--height)]"
 									>
 										{virtualizer.getVirtualItems().map((virtualItem) => (
 											<CommandItem
@@ -156,7 +155,7 @@ export function StampSelector({ stampsPromise }: Props) {
 														"--height": `${virtualItem.size}px`,
 													} as React.CSSProperties
 												}
-												className="absolute top-0 left-0 w-full h-[var(--height)] translate-y-[var(--top)]"
+												className="absolute top-0 left-0 h-[var(--height)] w-full translate-y-[var(--top)]"
 											>
 												:{filteredStamps[virtualItem.index].name}:
 											</CommandItem>

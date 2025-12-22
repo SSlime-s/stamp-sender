@@ -1,12 +1,12 @@
 "use client";
 
+import { useCallback, useId } from "react";
 import { buttonVariants } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { LSKeys } from "@/features/localstorage/keys";
 import { useLocalStorage } from "@/features/localstorage/useLocalStorage";
 import { cn } from "@/lib/utils";
-import { useCallback, useId } from "react";
 
 interface EffectItem {
 	value: string;
@@ -69,7 +69,7 @@ export function EffectSelector() {
 							buttonVariants({
 								variant: resolvedEffect === value ? "default" : "outline",
 							}),
-							"rounded-xl cursor-pointer",
+							"cursor-pointer rounded-xl",
 						)}
 						htmlFor={`${idPrefix}-${value}`}
 					>

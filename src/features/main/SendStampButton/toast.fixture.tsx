@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useCallback } from "react";
 import { useFixtureInput } from "react-cosmos/client";
+import { Button } from "@/components/ui/button";
 import { sendSuccessToast } from "./toast";
 
 export default function ToastFixture() {
@@ -27,7 +27,7 @@ export default function ToastFixture() {
 	}, [message, messageId, createdAt, channelPath]);
 
 	return (
-		<div className="grid place-items-center h-screen">
+		<div className="grid h-screen place-items-center">
 			<Button onClick={send}>Send toast</Button>
 		</div>
 	);

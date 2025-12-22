@@ -26,7 +26,7 @@ export default function RootLayout({
 				<body
 					className={cn(
 						inter.className,
-						"grid grid-rows-[max-content_1fr] h-full",
+						"grid h-full grid-rows-[max-content_1fr]",
 					)}
 				>
 					<ThemeProvider

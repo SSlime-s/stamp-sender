@@ -1,8 +1,8 @@
 "use client";
 
-import { Skeleton } from "@/components/ui/skeleton";
 import type React from "react";
 import useSWR from "swr";
+import { Skeleton } from "@/components/ui/skeleton";
 import { blobToURI } from "./blobToURI";
 
 interface Props extends React.ImgHTMLAttributes<HTMLImageElement> {
@@ -46,7 +46,8 @@ export function AuthImgClient({ token, src, ...props }: Props) {
 		return <AuthImgSkeleton />;
 	}
 
-	// biome-ignore lint/a11y/useAltText: <explanation>
+	// biome-ignore lint/a11y/useAltText: alt は props に含まれている
+	// biome-ignore lint/performance/noImgElement: 外部から取ってくるので img のままでいい
 	return <img src={data} {...props} />;
 }
 

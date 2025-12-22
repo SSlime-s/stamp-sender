@@ -1,5 +1,8 @@
 "use client";
 
+import { FileIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
+import { use, useCallback, useMemo, useState } from "react";
+import { toast } from "sonner";
 import { AuthImgClient, AuthImgSkeleton } from "@/components/AuthImg/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,9 +17,6 @@ import { fileUrl } from "@/features/traq/fileUrl";
 import type { Channel, Stamp } from "@/features/traq/model";
 import { parseChannels } from "@/features/traq/parseChannels";
 import { postMessage } from "@/features/traq/postMessage";
-import { FileIcon, PaperPlaneIcon } from "@radix-ui/react-icons";
-import { use, useCallback, useMemo, useState } from "react";
-import { toast } from "sonner";
 import { sendSuccessToast } from "./toast";
 
 interface Props {
@@ -97,7 +97,7 @@ export function SendStampButton({
 					onClick={send}
 					disabled={busy || isNotifyAll}
 					variant="outline"
-					className="w-auto h-auto rounded-full px-12 py-8 grid grid-flow-row gap-2 place-items-center aspect-square disabled:pointer-events-auto disabled:hover:bg-background"
+					className="grid aspect-square h-auto w-auto grid-flow-row place-items-center gap-2 rounded-full px-12 py-8 disabled:pointer-events-auto disabled:hover:bg-background"
 				>
 					{stampId === null ? (
 						<FileIcon height={128} width={128} className="text-slate-300" />
@@ -111,7 +111,7 @@ export function SendStampButton({
 						/>
 					)}
 
-					<span className="text-slate-400 grid grid-cols-[max-content_max-content] items-center gap-1">
+					<span className="grid grid-cols-[max-content_max-content] items-center gap-1 text-slate-400">
 						{stampId === null ? (
 							<>未選択</>
 						) : (
@@ -137,11 +137,11 @@ export function SendStampButtonSkeleton() {
 	return (
 		<Button
 			variant="outline"
-			className="w-auto h-auto rounded-full px-12 py-8 grid grid-flow-row gap-2 place-items-center aspect-square"
+			className="grid aspect-square h-auto w-auto grid-flow-row place-items-center gap-2 rounded-full px-12 py-8"
 			disabled
 		>
 			<AuthImgSkeleton />
-			<span className="text-slate-400 grid grid-cols-[max-content_max-content] items-center gap-1">
+			<span className="grid grid-cols-[max-content_max-content] items-center gap-1 text-slate-400">
 				送信
 				<PaperPlaneIcon />
 			</span>

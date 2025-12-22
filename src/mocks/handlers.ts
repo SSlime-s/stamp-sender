@@ -1,6 +1,6 @@
+import { HttpResponse, http } from "msw";
 import { TRAQ_API_BASE_URL } from "@/features/traq/consts";
 import type { Message } from "@/features/traq/model";
-import { http, HttpResponse } from "msw";
 
 export const handlers = [
 	http.post(

@@ -1,3 +1,4 @@
+import { CaretDownIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -7,17 +8,16 @@ import {
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { auth, signIn, signOut } from "@/features/auth";
-import { CaretDownIcon, GitHubLogoIcon } from "@radix-ui/react-icons";
 import { ThemeSwitchButton } from "./ThemeSwitchButton";
 
 export async function Header() {
 	const session = await auth();
 
 	return (
-		<div className="grid grid-cols-[1fr_max-content_1fr] items-center px-2 min-h-16">
+		<div className="grid min-h-16 grid-cols-[1fr_max-content_1fr] items-center px-2">
 			<div className="grid grid-flow-col justify-self-start">
 				<ThemeSwitchButton />
-				<Button asChild variant="link" size="icon" className=" text-slate-400">
+				<Button asChild variant="link" size="icon" className="text-slate-400">
 					<a
 						href="https://github.com/SSlime-s/stamp-sender"
 						target="_blank"
@@ -31,7 +31,7 @@ export async function Header() {
 					</a>
 				</Button>
 			</div>
-			<h1 className="col-start-2 text-xl font-bold text-slate-500">
+			<h1 className="col-start-2 font-bold text-slate-500 text-xl">
 				Stamp Sender
 			</h1>
 			{session?.user === undefined ? (
