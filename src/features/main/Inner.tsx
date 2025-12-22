@@ -14,8 +14,8 @@ export default async function Inner() {
 
 	if (session?.user === undefined) {
 		return (
-			<div className="grid place-items-center size-full">
-				<div className="grid grid-flow-row place-items-center text-slate-600 text-2xl font-bold gap-2">
+			<div className="grid size-full place-items-center">
+				<div className="grid grid-flow-row place-items-center gap-2 font-bold text-2xl text-slate-600">
 					<p>Please Sign In</p>
 					<form
 						action={async () => {
@@ -41,11 +41,11 @@ export default async function Inner() {
 
 	return (
 		<TooltipProvider>
-			<div className="grid gap-y-12 grid-flow-row place-items-center">
+			<div className="grid grid-flow-row place-items-center gap-y-12">
 				<Suspense fallback={<ChannelSelectorSkeleton />}>
 					<ChannelSelector channelsPromise={channelsPublicPromise} />
 				</Suspense>
-				<div className="grid gap-y-4 grid-flow-row place-items-center">
+				<div className="grid grid-flow-row place-items-center gap-y-4">
 					<Suspense fallback={<SendStampButtonSkeleton />}>
 						<SendStampButton
 							stampsPromise={stampsPromise}

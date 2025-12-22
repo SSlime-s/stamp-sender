@@ -69,7 +69,7 @@ export function EffectSelector() {
 							buttonVariants({
 								variant: resolvedEffect === value ? "default" : "outline",
 							}),
-							"rounded-xl cursor-pointer",
+							"cursor-pointer rounded-xl",
 						)}
 						htmlFor={`${idPrefix}-${value}`}
 					>

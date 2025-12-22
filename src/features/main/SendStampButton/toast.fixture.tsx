@@ -27,7 +27,7 @@ export default function ToastFixture() {
 	}, [message, messageId, createdAt, channelPath]);
 
 	return (
-		<div className="grid place-items-center h-screen">
+		<div className="grid h-screen place-items-center">
 			<Button onClick={send}>Send toast</Button>
 		</div>
 	);
